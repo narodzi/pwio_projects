@@ -2,11 +2,11 @@ package project1;
 
 import javax.swing.*;
 
-public class FallingStarsWithUFO extends JFrame {
+public class FireworksSky extends JFrame {
     private DrawPanel drawPanel;
 
-    public FallingStarsWithUFO() {
-        setTitle("Spadające gwiazdy z UFO");
+    public FireworksSky() {
+        setTitle("Fireworks");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -15,16 +15,13 @@ public class FallingStarsWithUFO extends JFrame {
         setVisible(true);
 
         for (int i = 0; i < 10; i++) {
-            Thread starThread = new Thread(new Star(drawPanel));
-            starThread.start();
+            Thread fireworkThread = new Thread(new Firework(drawPanel));
+            fireworkThread.start();
         }
-
-        Thread ufoThread = new Thread(new UFO(drawPanel));
-        ufoThread.start();
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(FallingStarsWithUFO::new);
+        SwingUtilities.invokeLater(FireworksSky::new);
     }
 }
 
