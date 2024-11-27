@@ -1,22 +1,27 @@
-package project1;
+package project1executor;
 
 import javax.swing.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FireworksSky extends JFrame {
     private DrawPanel drawPanel;
+    private ExecutorService executorService;
 
     public FireworksSky() {
-        setTitle("Fireworks");
+        setTitle("Fireworks with Executor");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
         drawPanel = new DrawPanel();
         add(drawPanel);
         setVisible(true);
 
+        executorService = Executors.newFixedThreadPool(100);
+
         for (int i = 0; i < 100; i++) {
-            Thread fireworkThread = new Thread(new Firework(drawPanel));
-            fireworkThread.start();
+            executorService.submit(new Firework(drawPanel));
         }
     }
 
@@ -24,4 +29,3 @@ public class FireworksSky extends JFrame {
         SwingUtilities.invokeLater(FireworksSky::new);
     }
 }
-
