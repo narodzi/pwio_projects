@@ -2,10 +2,10 @@ package project1;
 
 import javax.swing.*;
 
-public class FireworksSky extends JFrame {
+public class FireworksSkySimple extends JFrame {
     private DrawPanel drawPanel;
 
-    public FireworksSky() {
+    public FireworksSkySimple() {
         setTitle("Fireworks");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -20,7 +20,7 @@ public class FireworksSky extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(FireworksSky::new);
+        SwingUtilities.invokeLater(FireworksSkySimple::new);
     }
 }
 

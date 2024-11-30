@@ -1,14 +1,14 @@
-package project1executor;
+package project1;
 
 import javax.swing.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class FireworksSky extends JFrame {
+public class FireworksSkyExecutor extends JFrame {
     private DrawPanel drawPanel;
     private ExecutorService executorService;
 
-    public FireworksSky() {
+    public FireworksSkyExecutor() {
         setTitle("Fireworks with Executor");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -20,12 +20,12 @@ public class FireworksSky extends JFrame {
 
         executorService = Executors.newFixedThreadPool(100);
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 3; i++) {
             executorService.submit(new Firework(drawPanel));
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(FireworksSky::new);
+        SwingUtilities.invokeLater(FireworksSkyExecutor::new);
     }
 }
