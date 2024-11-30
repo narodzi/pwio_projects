@@ -3,49 +3,52 @@ package project1;
 import java.awt.*;
 import java.util.Random;
 
+import static java.lang.Thread.sleep;
+
 class Firework implements Runnable {
     private DrawPanel panel;
     private Random random;
-    private Color color;
-    private int explosionHeight;
-    private int explosionRadius;
-    private int explosionDimensions;
-
+    private final Color color;
+    private final int explosionHeight;
+    private final int explosionRadius;
+    private final int explosionDimensions;
+    
     public Firework(DrawPanel panel) {
         random = new Random();
-
         this.panel = panel;
         this.random = new Random();
         this.color = new Color(this.random.nextInt(105) + 150, this.random.nextInt(105) + 150, this.random.nextInt(105) + 150);
         this.explosionHeight = this.random.nextInt(200) + 100;
-
         this.explosionRadius = new Random().nextInt(30) + 5;
         this.explosionDimensions = new Random().nextInt(7) + 3;
     }
 
     @Override
     public void run() {
+        boolean isExplosionOn = false;
         while (true) {
             int x = random.nextInt(800);
             int y = 600;
             int speed = random.nextInt(10) + 10;
-
-            try {
-                while (y > 0) {
-                    panel.drawFirework(x, y, this.color);
-                    Thread.sleep(110);
-                    panel.clearFirework(x, y);
-                    y -= speed;
-
-                    if (y <= this.explosionHeight) {
-                        panel.createExplosion(x, y, this.color, this.explosionRadius, this.explosionDimensions);
-                        Thread.sleep(200);
-                        panel.clearExplosion(x, y, this.explosionRadius, this.explosionDimensions);
-                        break;
-                    }
+            while (y > 0) {
+                if (isExplosionOn){
+                    panel.clearExplosion(x, y, explosionRadius, explosionDimensions);
+                    isExplosionOn = false;
+                    break;
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                if (y <= this.explosionHeight) {
+                    panel.clearFirework(x, y);
+                    panel.drawExplosion(x, y, color, explosionRadius, explosionDimensions);
+                    isExplosionOn = true;
+                } else {
+                    panel.drawFirework(x, y, speed, color);
+                    y -= speed;
+                }
+                try{
+                    sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

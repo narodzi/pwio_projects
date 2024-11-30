@@ -13,8 +13,7 @@ public class FireworksSky extends JFrame {
         drawPanel = new DrawPanel();
         add(drawPanel);
         setVisible(true);
-
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 5; i++) {
             Thread fireworkThread = new Thread(new Firework(drawPanel));
             fireworkThread.start();
         }
