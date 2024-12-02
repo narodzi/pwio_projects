@@ -26,7 +26,8 @@ class Firework implements Runnable {
     @Override
     public void run() {
         boolean isExplosionOn = false;
-        while (true) {
+        boolean isActive = true;
+        while (isActive) {
             int x = random.nextInt(800);
             int y = 600;
             int speed = random.nextInt(10) + 10;
@@ -34,6 +35,7 @@ class Firework implements Runnable {
                 if (isExplosionOn){
                     panel.clearExplosion(x, y, explosionRadius, explosionDimensions);
                     isExplosionOn = false;
+                    isActive = false;
                     break;
                 }
                 if (y <= this.explosionHeight) {

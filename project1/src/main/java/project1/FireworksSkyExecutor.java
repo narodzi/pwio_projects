@@ -18,10 +18,26 @@ public class FireworksSkyExecutor extends JFrame {
         add(drawPanel);
         setVisible(true);
 
-        executorService = Executors.newFixedThreadPool(100);
+        executorService = Executors.newCachedThreadPool();
 
-        for (int i = 0; i < 3; i++) {
-            executorService.submit(new Firework(drawPanel));
+        for (int i = 0; i < 100; i++) {
+            executorService.execute(new Firework(drawPanel));
+        }
+        try{
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < 50; i++) {
+            executorService.execute(new Firework(drawPanel));
+        }
+        try{
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        for (int i = 0; i < 90; i++) {
+            executorService.execute(new Firework(drawPanel));
         }
     }
 
