@@ -28,8 +28,8 @@ class Firework implements Runnable {
         boolean isExplosionOn = false;
         boolean isActive = true;
         while (isActive) {
-            int x = random.nextInt(800);
-            int y = 600;
+            int x = random.nextInt(panel.getWidth());
+            int y = panel.getHeight();
             int speed = random.nextInt(10) + 10;
             while (y > 0) {
                 if (isExplosionOn){

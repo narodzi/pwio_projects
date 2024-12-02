@@ -1,42 +1,53 @@
 package project1;
 
 import javax.swing.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class FireworksSkyExecutor extends JFrame {
-    private DrawPanel drawPanel;
-    private ExecutorService executorService;
+public class FireworksSkyExecutor extends JFrame implements KeyListener {
+
+    private final DrawPanel drawPanel;
+    private final ExecutorService executorService;
 
     public FireworksSkyExecutor() {
+        executorService = Executors.newCachedThreadPool();
         setTitle("Fireworks with Executor");
         setSize(800, 600);
+        setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-
         drawPanel = new DrawPanel();
+        drawPanel.setFocusable(false);
         add(drawPanel);
         setVisible(true);
+        addKeyListener(this);
+    }
 
-        executorService = Executors.newCachedThreadPool();
+    @Override
+    public void keyTyped(KeyEvent e) {
 
-        for (int i = 0; i < 100; i++) {
-            executorService.execute(new Firework(drawPanel));
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+        switch (keyCode) {
+            case KeyEvent.VK_Q -> createFireworks(10);
+            case KeyEvent.VK_W -> createFireworks(50);
+            case KeyEvent.VK_E -> createFireworks(100);
+            case KeyEvent.VK_R -> createFireworks(500);
         }
-        try{
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < 50; i++) {
-            executorService.execute(new Firework(drawPanel));
-        }
-        try{
-            Thread.sleep(7000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        for (int i = 0; i < 90; i++) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    private void createFireworks(int n){
+        for (int i = 0; i < n; i++) {
             executorService.execute(new Firework(drawPanel));
         }
     }
