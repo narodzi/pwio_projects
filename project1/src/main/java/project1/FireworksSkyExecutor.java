@@ -5,14 +5,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class FireworksSkyExecutor extends JFrame implements KeyListener {
 
     private final DrawPanel drawPanel;
-    private final ExecutorService executorService;
+    private final ScheduledExecutorService executorService;
 
     public FireworksSkyExecutor() {
-        executorService = Executors.newCachedThreadPool();
+        executorService = Executors.newScheduledThreadPool(1000);
         setTitle("Fireworks with Executor");
         setSize(800, 600);
         setResizable(true);
