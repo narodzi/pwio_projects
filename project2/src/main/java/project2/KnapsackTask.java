@@ -23,7 +23,7 @@ public class KnapsackTask extends RecursiveTask<Integer> {
         }
 
         if (weights.get(n - 1) > capacity) {
-            return new KnapsackTask(weights, values, n - 1, capacity).compute();
+            return new KnapsackTask(weights, values, n - 1, capacity).invoke();
         }
 
         KnapsackTask withoutItem = new KnapsackTask(weights, values, n - 1, capacity);
