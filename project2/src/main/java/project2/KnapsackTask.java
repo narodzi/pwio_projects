@@ -4,14 +4,12 @@ import java.util.List;
 import java.util.concurrent.RecursiveTask;
 
 public class KnapsackTask extends RecursiveTask<Integer> {
-    private final List<Integer> weights;
-    private final List<Integer> values;
+    private final StoreItems items;
     private final int n;
     private final int capacity;
 
-    public KnapsackTask(List<Integer> weights, List<Integer> values, int n, int capacity) {
-        this.weights = weights;
-        this.values = values;
+    public KnapsackTask(StoreItems items, int n, int capacity) {
+        this.items = items;
         this.n = n;
         this.capacity = capacity;
     }
@@ -22,17 +20,17 @@ public class KnapsackTask extends RecursiveTask<Integer> {
             return 0;
         }
 
-        if (weights.get(n - 1) > capacity) {
-            return new KnapsackTask(weights, values, n - 1, capacity).fork().join();
+        if (items.get(n - 1).getWeight() > capacity) {
+            return new KnapsackTask(items, n - 1, capacity).fork().join();
         }
 
-        KnapsackTask withoutItem = new KnapsackTask(weights, values, n - 1, capacity);
+        KnapsackTask withoutItem = new KnapsackTask(items, n - 1, capacity);
         withoutItem.fork();
 
-        KnapsackTask withItem = new KnapsackTask(weights, values, n - 1, capacity - weights.get(n - 1));
+        KnapsackTask withItem = new KnapsackTask(items, n - 1, capacity - items.get(n - 1).getWeight());
         withItem.fork();
 
-        int includeItem = values.get(n - 1) + withItem.join();
+        int includeItem = items.get(n - 1).getPrice() + withItem.join();
         int excludeItem = withoutItem.join();
 
         return Math.max(includeItem, excludeItem);

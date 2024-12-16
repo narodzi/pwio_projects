@@ -33,25 +33,22 @@ public class KnapsackForkJoin {
         int quantity = scanner.nextInt();
         scanner.nextLine();
 
-        List<Integer> weights = new ArrayList<Integer>();
-        List<Integer> values = new ArrayList<Integer>();
+        StoreItems storeItems = new StoreItems();
 
         for(int i = 0; i < quantity; i++) {
-            values.add(rnd.nextInt(vmax-vmin) + vmin);
-            weights.add(rnd.nextInt(wmax-wmin) + wmin);
+            storeItems.addItem(new StoreItem(rnd.nextInt(wmax-wmin) + wmin, rnd.nextInt(vmax-vmin) + vmin));
         }
 
-        System.out.println("Wagi: " + weights.toString());
-        System.out.println("Wartości: " + values.toString());
+        System.out.println("Przedmioty: " + storeItems.toString());
 
-        int maxValue = knapsackForkJoin(weights, values, capacity);
+        int maxValue = knapsackForkJoin(storeItems, capacity);
 
         System.out.println("Maksymalna wartość, którą można osiągnąć: " + maxValue);
     }
     
-    private static int knapsackForkJoin(List<Integer> weights, List<Integer> values, int capacity) {
+    private static int knapsackForkJoin(StoreItems storeitems, int capacity) {
         ForkJoinPool pool = new ForkJoinPool();
-        KnapsackTask task = new KnapsackTask(weights, values, weights.size(), capacity);
+        KnapsackTask task = new KnapsackTask(storeitems, storeitems.size(), capacity);
         return pool.invoke(task);
     }
 }
