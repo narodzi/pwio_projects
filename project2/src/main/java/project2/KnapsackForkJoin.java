@@ -18,8 +18,16 @@ public class KnapsackForkJoin {
 
         String[] split_weights = range.split("-");
 
-        int min = Integer.parseInt(split_weights[0]);
-        int max = Integer.parseInt(split_weights[1]);
+        int wmin = Integer.parseInt(split_weights[0]);
+        int wmax = Integer.parseInt(split_weights[1]);
+
+        System.out.print("Podaj zakres wartości przedmiotów oddzielony \"-\": ");
+        String vrange = scanner.nextLine();
+
+        String[] split_values = vrange.split("-");
+
+        int vmin = Integer.parseInt(split_values[0]);
+        int vmax = Integer.parseInt(split_values[1]);
 
         System.out.print("Podaj ilość przedmiotów: ");
         int quantity = scanner.nextInt();
@@ -29,10 +37,9 @@ public class KnapsackForkJoin {
         List<Integer> values = new ArrayList<Integer>();
 
         for(int i = 0; i < quantity; i++) {
-            values.add(rnd.nextInt(max) + min);
-            weights.add(rnd.nextInt(max) + min);
+            values.add(rnd.nextInt(vmax-vmin) + vmin);
+            weights.add(rnd.nextInt(wmax-wmin) + wmin);
         }
-
 
         System.out.println("Wagi: " + weights.toString());
         System.out.println("Wartości: " + values.toString());
@@ -42,44 +49,9 @@ public class KnapsackForkJoin {
         System.out.println("Maksymalna wartość, którą można osiągnąć: " + maxValue);
     }
     
-    public static int knapsackForkJoin(List<Integer> weights, List<Integer> values, int capacity) {
+    private static int knapsackForkJoin(List<Integer> weights, List<Integer> values, int capacity) {
         ForkJoinPool pool = new ForkJoinPool();
         KnapsackTask task = new KnapsackTask(weights, values, weights.size(), capacity);
         return pool.invoke(task);
-    }
-
-    static class KnapsackTask extends RecursiveTask<Integer> {
-        private final List<Integer> weights;
-        private final List<Integer> values;
-        private final int n;
-        private final int capacity;
-
-        public KnapsackTask(List<Integer> weights, List<Integer> values, int n, int capacity) {
-            this.weights = weights;
-            this.values = values;
-            this.n = n;
-            this.capacity = capacity;
-        }
-
-        @Override
-        protected Integer compute() {
-            if (n == 0 || capacity == 0) {
-                return 0;
-            }
-
-            if (weights.get(n - 1) > capacity) {
-                return new KnapsackTask(weights, values, n - 1, capacity).fork().join();
-            }
-
-            KnapsackTask withoutItem = new KnapsackTask(weights, values, n - 1, capacity);
-            withoutItem.fork();
-
-            KnapsackTask withItem = new KnapsackTask(weights, values, n - 1, capacity - weights.get(n - 1));
-
-            int includeItem = values.get(n - 1) + withItem.compute();
-            int excludeItem = withoutItem.join();
-
-            return Math.max(includeItem, excludeItem);
-        }
     }
 }
