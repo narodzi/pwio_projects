@@ -9,11 +9,11 @@ public class KnapsackForkJoin {
         Random rnd = new Random();
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Podaj pojemność plecaka: ");
+        System.out.print("Podaj pojemnosc plecaka: ");
         int capacity = scanner.nextInt();
         scanner.nextLine();
 
-        System.out.print("Podaj zakres wag przedmiotów oddzielony \"-\": ");
+        System.out.print("Podaj zakres wag przedmiotow oddzielony \"-\": ");
         String range = scanner.nextLine();
 
         String[] split_weights = range.split("-");
@@ -21,7 +21,7 @@ public class KnapsackForkJoin {
         int wmin = Integer.parseInt(split_weights[0]);
         int wmax = Integer.parseInt(split_weights[1]);
 
-        System.out.print("Podaj zakres wartości przedmiotów oddzielony \"-\": ");
+        System.out.print("Podaj zakres wartości przedmiotow oddzielony \"-\": ");
         String vrange = scanner.nextLine();
 
         String[] split_values = vrange.split("-");
@@ -29,26 +29,26 @@ public class KnapsackForkJoin {
         int vmin = Integer.parseInt(split_values[0]);
         int vmax = Integer.parseInt(split_values[1]);
 
-        System.out.print("Podaj ilość przedmiotów: ");
+        System.out.print("Podaj ilość przedmiotow: ");
         int quantity = scanner.nextInt();
         scanner.nextLine();
 
-        StoreItems storeItems = new StoreItems();
+        List<StoreItem> storeItems = new ArrayList<>();
 
         for(int i = 0; i < quantity; i++) {
-            storeItems.addItem(new StoreItem(rnd.nextInt(wmax-wmin) + wmin, rnd.nextInt(vmax-vmin) + vmin));
+            storeItems.add(new StoreItem(rnd.nextInt(wmax-wmin) + wmin, rnd.nextInt(vmax-vmin) + vmin));
         }
 
-        System.out.println("Przedmioty: " + storeItems.toString());
+        System.out.println("Wszystkie przedmioty: " + storeItems.toString());
 
-        int maxValue = knapsackForkJoin(storeItems, capacity);
-
-        System.out.println("Maksymalna wartość, którą można osiągnąć: " + maxValue);
+        List<StoreItem> maxItems = knapsackForkJoin(storeItems, capacity);
+        System.out.println("Przedmioty dla maksymalnego zysku: " + StoreItem.itemsToString(maxItems));
+        System.out.println("Maksymalna wartosc: " + StoreItem.getCumulativeValue(maxItems));
     }
     
-    private static int knapsackForkJoin(StoreItems storeitems, int capacity) {
+    private static List<StoreItem> knapsackForkJoin(List<StoreItem> storeItems, int capacity) {
         ForkJoinPool pool = new ForkJoinPool();
-        KnapsackTask task = new KnapsackTask(storeitems, storeitems.size(), capacity);
+        KnapsackTask task = new KnapsackTask(storeItems, storeItems.size(), capacity);
         return pool.invoke(task);
     }
 }
