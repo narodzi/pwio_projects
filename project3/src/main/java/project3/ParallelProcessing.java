@@ -4,7 +4,7 @@ import java.util.List;
 
 public class ParallelProcessing {
 
-    private static final int SIZE = 10_000_000;
+    private static final int SIZE = 100_000_000;
     private static final int BOUND = 1_000;
 
     public static void main(String[] args) {
