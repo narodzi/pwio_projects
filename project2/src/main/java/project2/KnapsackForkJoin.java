@@ -47,7 +47,7 @@ public class KnapsackForkJoin {
     }
     
     private static List<StoreItem> knapsackForkJoin(List<StoreItem> storeItems, int capacity) {
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool(4);
         KnapsackTask task = new KnapsackTask(storeItems, storeItems.size(), capacity);
         return pool.invoke(task);
     }
